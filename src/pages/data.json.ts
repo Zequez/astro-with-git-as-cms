@@ -1,11 +1,12 @@
 import type { APIRoute } from "astro";
 import { readFileSync, writeFileSync } from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+// import path from "path";
+// import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const DATA_STORE = path.join(__dirname, "../../data_store.json");
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+// const DATA_STORE = path.join(__dirname, "../../data_store.json");
+const DATA_STORE = "./data_store.json";
 
 export const post: APIRoute = async ({ params, request }) => {
   if (request.headers.get("Content-Type") === "application/json") {
