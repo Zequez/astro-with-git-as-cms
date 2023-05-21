@@ -28,6 +28,13 @@ import React, { useState, useEffect } from "react";
 const Items: React.FC = () => {
   const [items, setItems] = useState<string[]>([]);
   const [newItem, setNewItem] = useState("");
+  const [passphrase, setPassphrase] = useState(
+    localStorage.getItem("passphrase") || ""
+  );
+
+  useEffect(() => {
+    localStorage.setItem("passphrase", passphrase);
+  }, [passphrase]);
 
   useEffect(() => {
     fetchItems();
@@ -49,6 +56,7 @@ const Items: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Admin-Passphrase": passphrase,
         },
         body: JSON.stringify({ items }),
       });
@@ -87,6 +95,11 @@ const Items: React.FC = () => {
 
   return (
     <div>
+      <input
+        placeholder="Passphrase"
+        value={passphrase}
+        onChange={(ev) => setPassphrase(ev.target.value)}
+      />
       <ul>
         {items.map((item, index) => (
           <li key={index} className="flex items-center space-x-2">
