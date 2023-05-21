@@ -1,12 +1,14 @@
 import type { APIRoute } from "astro";
-import { promises as fs } from "fs";
+import { readFileSync, writeFileSync } from "fs";
+import path from "path";
 
 const DATA_STORE = "data_store.json";
 
 export const post: APIRoute = async ({ params, request }) => {
   if (request.headers.get("Content-Type") === "application/json") {
     const data = await request.json();
-    await fs.writeFile(DATA_STORE, JSON.stringify(data));
+    const dataStorePath = path.join(process.cwd(), DATA_STORE);
+    writeFileSync(dataStorePath, JSON.stringify(data));
     console.log("Data updated", data);
     return {
       body: JSON.stringify(data),
@@ -17,7 +19,8 @@ export const post: APIRoute = async ({ params, request }) => {
 };
 
 export const get: APIRoute = async ({ params, request }) => {
-  const data = await fs.readFile(DATA_STORE, "utf8");
+  const dataStorePath = path.join(process.cwd(), DATA_STORE);
+  const data = readFileSync(dataStorePath, "utf8");
   return {
     body: data,
   };
